@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 import com.mysql.jdbc.Statement;
 
@@ -44,7 +45,7 @@ public class UserModel {
 	public Integer getId() {
 		return id;
 	}
-
+	
 	public void setId(Integer id) {
 		this.id = id;
 	}
@@ -104,8 +105,12 @@ public class UserModel {
 			String sql = "Select * from users where `email` = ? and `password` = ?";
 			PreparedStatement stmt;
 			stmt = conn.prepareStatement(sql);
+			
+			
 			stmt.setString(1, email);
 			stmt.setString(2, pass);
+			
+			
 			ResultSet rs = stmt.executeQuery();
 			if (rs.next()) {
 				UserModel user = new UserModel();
@@ -124,6 +129,107 @@ public class UserModel {
 		}
 		return null;
 	}
+	
+	//////////// Follow User/////////////////////////
+	public static boolean followUser(int idAli, int idAhmed) {
+		try {
+			Connection conn = DBConnection.getActiveConnection();
+			
+			String sql= "Insert into followers (`followerID`,`followingID`) VALUES(?,?)";
+			PreparedStatement stmt;
+			stmt = conn.prepareStatement(sql);
+			stmt.setInt(1, idAli);
+			stmt.setInt(2, idAhmed);
+			
+			ResultSet rs = stmt.executeQuery();
+			return true;
+		
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return false;
+	}
+////////////unFollow User/////////////////////////
+	public static boolean unFollowUser(int idAli,int idAhmed) {
+		try {
+			
+			Connection conn = DBConnection.getActiveConnection();
+			//Check if this statement is written correctly or not
+			String sql = "DELETE FROM followers" + "WHERE `followerID` = ? and `followingID` = ?";
+			PreparedStatement stmt;
+			stmt = conn.prepareStatement(sql);
+			stmt.setInt(1, idAli);
+			stmt.setInt(2, idAhmed);
+			
+			ResultSet rs = stmt.executeQuery();
+			return true;
+			} 
+		catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			}
+		return false;
+		}
+	
+	//////////// ID to Name/////////////////////////
+	public static String fromIDtoName(int id)
+	{
+		try{
+		Connection conn = DBConnection.getActiveConnection();
+		
+		String sql = "Select `name` from users where `id` = ?";
+		PreparedStatement stmt;
+		stmt = conn.prepareStatement(sql);
+		stmt.setInt(1, id);
+		ResultSet rs = stmt.executeQuery();
+		if (rs.next()) {
+			UserModel user = new UserModel();
+			
+			user.name = rs.getString("name");
+			return user.name;
+		}
+		return null;
+		
+		}
+		catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			
+		}return null;
+	
+	}
+
+	//////////// get Followers/////////////////////////
+	public static boolean getFollowers(int idAli) {
+		String name;
+		try {
+			Connection conn = DBConnection.getActiveConnection();
+			//Check if this statement is true or not
+			String sql = "Select 'followerID' from followers where `followingID` = ?";
+			
+			PreparedStatement stmt;
+			stmt = conn.prepareStatement(sql);
+			stmt.setInt(1, idAli);
+			
+			ResultSet rs = stmt.executeQuery();
+			
+			if (rs.next()) {
+				
+				UserModel user = new UserModel();
+				user.id = rs.getInt("followerID");
+				name=fromIDtoName(user.id);
+				System.out.println(name);	
+				return true;
+		}
+		
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return false;
+	}
+
 
 	public static boolean updateUserPosition(Integer id, Double lat, Double lon) {
 		try{
@@ -141,5 +247,32 @@ public class UserModel {
 		}
 		return false;
 	}
-
+////////////getFollowerLastPosition/////////////////////////
+	public static boolean getFollowerPosition(Integer followerID) {
+		try{
+			Connection conn = DBConnection.getActiveConnection();
+			
+			String sql = "Select `lat` and `lon` from users where `id` = ?";
+			PreparedStatement stmt;
+			stmt = conn.prepareStatement(sql);
+			stmt.setInt(3, followerID );
+			
+			ResultSet rs = stmt.getGeneratedKeys();
+			if (rs.next()) {
+				UserModel user = new UserModel();
+				user.id = rs.getInt(1);
+				user.lat = rs.getDouble("lat");
+				user.lon = rs.getDouble("long");
+				System.out.println(user.lat);
+				System.out.println(user.lon);
+				return true;
+			}
+			
+			
+			return true;
+		}catch(SQLException e){
+			e.printStackTrace();
+		}
+		return false;
+	}
 }

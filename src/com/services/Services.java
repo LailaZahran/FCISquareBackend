@@ -47,7 +47,10 @@ public class Services {
 		json.put("long", user.getLon());
 		return json.toJSONString();
 	}
-
+   /////////////////////////////////////////
+	
+	////////////////////////////////////////////
+	
 	@POST
 	@Path("/login")
 	@Produces(MediaType.TEXT_PLAIN)
@@ -65,14 +68,35 @@ public class Services {
 	}
 	
 	@POST
-	@Path("/updatePosition")
+	@Path("/followUser")
 	@Produces(MediaType.TEXT_PLAIN)
-	public String updatePosition(@FormParam("id") String id,
-			@FormParam("lat") String lat, @FormParam("long") String lon) {
-		Boolean status = UserModel.updateUserPosition(Integer.parseInt(id), Double.parseDouble(lat), Double.parseDouble(lon));
-		JSONObject json = new JSONObject();
-		json.put("status", status ? 1 : 0);
-		return json.toJSONString();
+	public boolean followUser(@FormParam("id") int id1,
+			@FormParam("id") int id2) {
+		boolean check = UserModel.followUser(id1, id2);
+		return check;
+	}
+	
+	@POST
+	@Path("/unFollowUser")
+	@Produces(MediaType.TEXT_PLAIN)
+	public boolean unFollowUser(@FormParam("id") int id1,
+			@FormParam("id") int id2) {
+		boolean check = UserModel.unFollowUser(id1, id2);
+		return check;
+	}
+	
+	@POST
+	@Path("/getFollowers")
+	@Produces(MediaType.TEXT_PLAIN)
+	public void unFollowUser(@FormParam("id") int id1) {
+    UserModel.getFollowers(id1);	
+	}
+	
+	@POST
+	@Path("/getFollowerPosition")
+	@Produces(MediaType.TEXT_PLAIN)
+	public void getFollowerPosition(@FormParam("id") int id1) {
+    UserModel.getFollowerPosition(id1);	
 	}
 
 	@GET
