@@ -23,6 +23,18 @@ import com.models.UserModel;
 @Path("/")
 public class Services {
 
+	/**
+	 * This class holds the services and connect it to the userModel functions
+	 */
+	
+	
+	/**
+	 * 
+	 * @param name
+	 * @param email
+	 * @param pass
+	 * @return
+	 */
 	/*
 	 * @GET
 	 * 
@@ -50,7 +62,12 @@ public class Services {
    /////////////////////////////////////////
 	
 	////////////////////////////////////////////
-	
+	/**
+	 * 
+	 * @param email
+	 * @param pass
+	 * @return
+	 */
 	@POST
 	@Path("/login")
 	@Produces(MediaType.TEXT_PLAIN)
@@ -76,6 +93,12 @@ public class Services {
 	
 	
 	/////
+	/**
+	 * 
+	 * @param id1
+	 * @param id2
+	 * @return
+	 */
 	@POST
 	@Path("/followUser")
 	@Produces(MediaType.TEXT_PLAIN)
@@ -86,7 +109,12 @@ public class Services {
 		json.put("check", check ? 1 : 0);
 		return json.toJSONString();
 	}
-	
+	/**
+	 * 
+	 * @param id1
+	 * @param id2
+	 * @return
+	 */
 	@POST
 	@Path("/unFollowUser")
 	@Produces(MediaType.TEXT_PLAIN)
@@ -99,7 +127,11 @@ public class Services {
 	}
 	
 	////
-	
+	/**
+	 * 
+	 * @param id1
+	 * @return
+	 */
 	@POST
 	@Path("/getFollowers")
 	@Produces(MediaType.TEXT_PLAIN)
@@ -119,7 +151,11 @@ public class Services {
 		}
 		
 	}
-	
+	/**
+	 * 
+	 * @param id1
+	 * @return
+	 */
 	@POST
 	@Path("/getFollowerPosition")
 	@Produces(MediaType.TEXT_PLAIN)
@@ -139,6 +175,10 @@ public class Services {
 		}
 	}
 
+	/**
+	 * 
+	 * @return
+	 */
 	@GET
 	@Path("/")
 	@Produces(MediaType.TEXT_PLAIN)

@@ -10,6 +10,10 @@ import com.mysql.jdbc.Statement;
 
 public class UserModel {
 
+	/**
+	 * This class holds the user basic functions (sign-in / sign-up / followUser/ unfollowUser
+	 * getFollowersList / GetFollowerPosition )
+	 */
 	
 	private String name;
 	private String email;
@@ -66,6 +70,13 @@ public class UserModel {
 		this.lon = lon;
 	}
 
+	/**
+	 * 
+	 * @param name
+	 * @param email
+	 * @param pass
+	 * @return
+	 */
 	public static UserModel addNewUser(String name, String email, String pass) {
 		try {
 			Connection conn = DBConnection.getActiveConnection();
@@ -98,7 +109,12 @@ public class UserModel {
 	}
 
 	
-	
+	/**
+	 * 
+	 * @param email
+	 * @param pass
+	 * @return
+	 */
 	public static UserModel login(String email, String pass) {
 		try {
 			Connection conn = DBConnection.getActiveConnection();
@@ -132,6 +148,12 @@ public class UserModel {
 	}
 	
 	//////////// Follow User/////////////////////////
+	/**
+	 * 
+	 * @param id1
+	 * @param id2
+	 * @return
+	 */
 	public static boolean followUser(int id1, int id2) {
 		try {
 			
@@ -165,6 +187,12 @@ public class UserModel {
 		return false;
 	}
 ////////////unFollow User/////////////////////////
+	/**
+	 * 
+	 * @param id1
+	 * @param id2
+	 * @return
+	 */
 	public static boolean unFollowUser(int id1,int id2) {
 		try {
 			
@@ -197,6 +225,11 @@ public class UserModel {
 		}
 	
 	//////////// ID to Name/////////////////////////
+	/**
+	 * 
+	 * @param id
+	 * @return
+	 */
 	public static String fromIDtoName(int id)
 	{
 		try{
@@ -227,6 +260,11 @@ public class UserModel {
 	}
 
 	//////////// get Followers/////////////////////////
+	/**
+	 * 
+	 * @param id1
+	 * @return
+	 */
 	public static UserModel getFollowers(int id1) {
 		String name;
 		try {
@@ -260,6 +298,13 @@ public class UserModel {
 	}
 
 
+	/**
+	 * 
+	 * @param id
+	 * @param lat
+	 * @param lon
+	 * @return
+	 */
 	public static boolean updateUserPosition(Integer id, Double lat, Double lon) {
 		try{
 			Connection conn = DBConnection.getActiveConnection();
@@ -277,6 +322,11 @@ public class UserModel {
 		return false;
 	}
 ////////////getFollowerLastPosition/////////////////////////
+	/**
+	 * 
+	 * @param followerID
+	 * @return
+	 */
 	public static UserModel getFollowerPosition(Integer followerID) {
 		try{
 			Connection conn = DBConnection.getActiveConnection();
