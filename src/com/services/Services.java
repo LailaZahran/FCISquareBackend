@@ -74,29 +74,31 @@ public class Services {
 	}
 		
 	
+	
+	/////
 	@POST
 	@Path("/followUser")
 	@Produces(MediaType.TEXT_PLAIN)
-	public String followUser(@FormParam("followerid") int id1,
-			@FormParam("followingid") int id2) {
-		boolean check = UserModel.followUser(id1, id2);
-		if (check){
-			return "Done";}
-		else 
-			return "error";
+	public String followUser(@FormParam("followerid") String id1,
+			@FormParam("followingid") String id2) {
+		boolean check = UserModel.followUser(Integer.parseInt(id1), Integer.parseInt(id2));
+		JSONObject json = new JSONObject();
+		json.put("check", check ? 1 : 0);
+		return json.toJSONString();
 	}
 	
 	@POST
 	@Path("/unFollowUser")
 	@Produces(MediaType.TEXT_PLAIN)
-	public String unFollowUser(@FormParam("followerid") int id1,
-			@FormParam("followingid") int id2) {
-		boolean check = UserModel.unFollowUser(id1, id2);
-		if (check){
-			return "Done";}
-		else 
-			return "error";
+	public String unFollowUser(@FormParam("followerid") String id1,
+			@FormParam("followingid") String id2) {
+		boolean check = UserModel.unFollowUser(Integer.parseInt(id1), Integer.parseInt(id2));
+		JSONObject json = new JSONObject();
+		json.put("check", check ? 1 : 0);
+		return json.toJSONString();
 	}
+	
+	////
 	
 	@POST
 	@Path("/getFollowers")
