@@ -104,6 +104,7 @@ public class UserModel {
 			Connection conn = DBConnection.getActiveConnection();
 			String sql = "Select * from users where `email` = ? and `password` = ?";
 			PreparedStatement stmt;
+            
 			stmt = conn.prepareStatement(sql);
 			
 			
@@ -131,18 +132,31 @@ public class UserModel {
 	}
 	
 	//////////// Follow User/////////////////////////
-	public static boolean followUser(int idAli, int idAhmed) {
+	public static boolean followUser(int id1, int id2) {
 		try {
+			
 			Connection conn = DBConnection.getActiveConnection();
 			
-			String sql= "Insert into followers (`followerID`,`followingID`) VALUES(?,?)";
+			String sql= "INSERT INTO followers (`followerID`, `followingID`) VALUES(?,?)";
 			PreparedStatement stmt;
-			stmt = conn.prepareStatement(sql);
-			stmt.setInt(1, idAli);
-			stmt.setInt(2, idAhmed);
 			
-			ResultSet rs = stmt.executeQuery();
-			return true;
+			stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+			stmt.setInt(1, id1);
+			stmt.setInt(2, id2);
+			stmt.executeUpdate();
+		 
+			//////////////////////////////////////////////////
+			ResultSet rs = stmt.getGeneratedKeys();
+			if (rs.next()) {
+				UserModel user = new UserModel();
+				UserModel user2 = new UserModel();
+				user.id = rs.getInt(1);
+	            user2.id=rs.getInt(2);
+			}
+			System.out.println(id1);
+			System.out.println(id2);
+				return true;
+			
 		
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
@@ -151,18 +165,28 @@ public class UserModel {
 		return false;
 	}
 ////////////unFollow User/////////////////////////
-	public static boolean unFollowUser(int idAli,int idAhmed) {
+	public static boolean unFollowUser(int id1,int id2) {
 		try {
 			
 			Connection conn = DBConnection.getActiveConnection();
 			//Check if this statement is written correctly or not
-			String sql = "DELETE FROM followers" + "WHERE `followerID` = ? and `followingID` = ?";
+			String sql = "DELETE FROM followers WHERE `followerID` = ? and `followingID` = ?";
 			PreparedStatement stmt;
-			stmt = conn.prepareStatement(sql);
-			stmt.setInt(1, idAli);
-			stmt.setInt(2, idAhmed);
+			stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+			stmt.setInt(1, id1);
+			stmt.setInt(2, id2);
+			stmt.executeUpdate();
 			
-			ResultSet rs = stmt.executeQuery();
+			ResultSet rs = stmt.getGeneratedKeys();
+			if (rs.next()) {
+				UserModel user = new UserModel();
+				UserModel user2 = new UserModel();
+				user.id = rs.getInt(1);
+	            user2.id=rs.getInt(2);
+			}
+			System.out.println(id1);
+			System.out.println(id2);
+		 
 			return true;
 			} 
 		catch (SQLException e) {
@@ -178,11 +202,13 @@ public class UserModel {
 		try{
 		Connection conn = DBConnection.getActiveConnection();
 		
-		String sql = "Select `name` from users where `id` = ?";
+		String sql = "Select name from users where `id` = ?";
+		
 		PreparedStatement stmt;
 		stmt = conn.prepareStatement(sql);
 		stmt.setInt(1, id);
 		ResultSet rs = stmt.executeQuery();
+		
 		if (rs.next()) {
 			UserModel user = new UserModel();
 			
@@ -201,16 +227,16 @@ public class UserModel {
 	}
 
 	//////////// get Followers/////////////////////////
-	public static boolean getFollowers(int idAli) {
+	public static UserModel getFollowers(int id1) {
 		String name;
 		try {
 			Connection conn = DBConnection.getActiveConnection();
 			//Check if this statement is true or not
-			String sql = "Select 'followerID' from followers where `followingID` = ?";
+			String sql =" SELECT `followerID` FROM `followers` WHERE `followingID`=?";
 			
 			PreparedStatement stmt;
 			stmt = conn.prepareStatement(sql);
-			stmt.setInt(1, idAli);
+			stmt.setInt(1, id1);
 			
 			ResultSet rs = stmt.executeQuery();
 			
@@ -218,16 +244,19 @@ public class UserModel {
 				
 				UserModel user = new UserModel();
 				user.id = rs.getInt("followerID");
+				
 				name=fromIDtoName(user.id);
-				System.out.println(name);	
-				return true;
-		}
+				System.out.println(name);
+				user.name = name;
+			   return user;	
+		    }
+		 
 		
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		return false;
+		return null;
 	}
 
 
@@ -248,31 +277,31 @@ public class UserModel {
 		return false;
 	}
 ////////////getFollowerLastPosition/////////////////////////
-	public static boolean getFollowerPosition(Integer followerID) {
+	public static UserModel getFollowerPosition(Integer followerID) {
 		try{
 			Connection conn = DBConnection.getActiveConnection();
 			
-			String sql = "Select `lat` and `lon` from users where `id` = ?";
+			String sql = "SELECT `lat`, `long` FROM `users` WHERE`id`=?";
 			PreparedStatement stmt;
 			stmt = conn.prepareStatement(sql);
-			stmt.setInt(3, followerID );
-			
-			ResultSet rs = stmt.getGeneratedKeys();
+			stmt.setInt(1, followerID);
+		
+			ResultSet rs =  stmt.executeQuery();
 			if (rs.next()) {
 				UserModel user = new UserModel();
-				user.id = rs.getInt(1);
+				//user.id = rs.getInt(1);
 				user.lat = rs.getDouble("lat");
 				user.lon = rs.getDouble("long");
 				System.out.println(user.lat);
 				System.out.println(user.lon);
-				return true;
+				return user;
 			}
 			
 			
-			return true;
+			
 		}catch(SQLException e){
 			e.printStackTrace();
 		}
-		return false;
+		return null;
 	}
 }

@@ -57,6 +57,11 @@ public class Services {
 	public String login(@FormParam("email") String email,
 			@FormParam("pass") String pass) {
 		UserModel user = UserModel.login(email, pass);
+		if(user==null)
+		{
+			return "error";
+		}
+		else{
 		JSONObject json = new JSONObject();
 		json.put("id", user.getId());
 		json.put("name", user.getName());
@@ -65,38 +70,71 @@ public class Services {
 		json.put("lat", user.getLat());
 		json.put("long", user.getLon());
 		return json.toJSONString();
+		}
 	}
+		
 	
 	@POST
 	@Path("/followUser")
 	@Produces(MediaType.TEXT_PLAIN)
-	public boolean followUser(@FormParam("id") int id1,
-			@FormParam("id") int id2) {
+	public String followUser(@FormParam("followerid") int id1,
+			@FormParam("followingid") int id2) {
 		boolean check = UserModel.followUser(id1, id2);
-		return check;
+		if (check){
+			return "Done";}
+		else 
+			return "error";
 	}
 	
 	@POST
 	@Path("/unFollowUser")
 	@Produces(MediaType.TEXT_PLAIN)
-	public boolean unFollowUser(@FormParam("id") int id1,
-			@FormParam("id") int id2) {
+	public String unFollowUser(@FormParam("followerid") int id1,
+			@FormParam("followingid") int id2) {
 		boolean check = UserModel.unFollowUser(id1, id2);
-		return check;
+		if (check){
+			return "Done";}
+		else 
+			return "error";
 	}
 	
 	@POST
 	@Path("/getFollowers")
 	@Produces(MediaType.TEXT_PLAIN)
-	public void unFollowUser(@FormParam("id") int id1) {
-    UserModel.getFollowers(id1);	
+	public String getFollowers(@FormParam("id") int id1) {
+		UserModel  user= UserModel.getFollowers(id1);
+		//return check;
+		if(user==null)
+		{
+			return "error";
+		}
+		else{
+		JSONObject json = new JSONObject();
+		json.put("id", user.getId());
+		json.put("name", user.getName());
+		
+		return json.toJSONString();
+		}
+		
 	}
 	
 	@POST
 	@Path("/getFollowerPosition")
 	@Produces(MediaType.TEXT_PLAIN)
-	public void getFollowerPosition(@FormParam("id") int id1) {
-    UserModel.getFollowerPosition(id1);	
+	public String getFollowerPosition(@FormParam("id") int id1) {
+       UserModel user=UserModel.getFollowerPosition(id1);	
+       if(user==null)
+		{
+			return "error";
+		}
+		else{
+		JSONObject json = new JSONObject();
+		 
+		json.put("lat", user.getLat());
+		json.put("long", user.getLon());
+		
+		return json.toJSONString();
+		}
 	}
 
 	@GET
