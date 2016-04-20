@@ -18,7 +18,9 @@ import org.glassfish.jersey.server.mvc.Viewable;
 import org.json.simple.JSONObject;
 
 import com.models.DBConnection;
-import com.models.UserModel;
+import com.models.FollowActivities;
+import com.models.UserPositionUpdate;
+import com.controller.UserAccount;
 
 @Path("/")
 public class Services {
@@ -49,7 +51,8 @@ public class Services {
 	@Produces(MediaType.TEXT_PLAIN)
 	public String signUp(@FormParam("name") String name,
 			@FormParam("email") String email, @FormParam("pass") String pass) {
-		UserModel user = UserModel.addNewUser(name, email, pass);
+		UserAccount user = new UserAccount();
+		user.addNewUser(name, email, pass);
 		JSONObject json = new JSONObject();
 		json.put("id", user.getId());
 		json.put("name", user.getName());
@@ -73,7 +76,8 @@ public class Services {
 	@Produces(MediaType.TEXT_PLAIN)
 	public String login(@FormParam("email") String email,
 			@FormParam("pass") String pass) {
-		UserModel user = UserModel.login(email, pass);
+		UserAccount user = new UserAccount();
+		 user.login(email, pass);
 		if(user==null)
 		{
 			return "error";
@@ -104,7 +108,7 @@ public class Services {
 	@Produces(MediaType.TEXT_PLAIN)
 	public String followUser(@FormParam("followerid") String id1,
 			@FormParam("followingid") String id2) {
-		boolean check = UserModel.followUser(Integer.parseInt(id1), Integer.parseInt(id2));
+		boolean check = FollowActivities.followUser(Integer.parseInt(id1), Integer.parseInt(id2));
 		JSONObject json = new JSONObject();
 		json.put("check", check ? 1 : 0);
 		return json.toJSONString();
@@ -120,7 +124,7 @@ public class Services {
 	@Produces(MediaType.TEXT_PLAIN)
 	public String unFollowUser(@FormParam("followerid") String id1,
 			@FormParam("followingid") String id2) {
-		boolean check = UserModel.unFollowUser(Integer.parseInt(id1), Integer.parseInt(id2));
+		boolean check = FollowActivities.unFollowUser(Integer.parseInt(id1), Integer.parseInt(id2));
 		JSONObject json = new JSONObject();
 		json.put("check", check ? 1 : 0);
 		return json.toJSONString();
@@ -136,7 +140,7 @@ public class Services {
 	@Path("/getFollowers")
 	@Produces(MediaType.TEXT_PLAIN)
 	public String getFollowers(@FormParam("id") int id1) {
-		UserModel  user= UserModel.getFollowers(id1);
+		UserAccount  user= FollowActivities.getFollowers(id1);
 		//return check;
 		if(user==null)
 		{
@@ -160,7 +164,7 @@ public class Services {
 	@Path("/getFollowerPosition")
 	@Produces(MediaType.TEXT_PLAIN)
 	public String getFollowerPosition(@FormParam("id") int id1) {
-       UserModel user=UserModel.getFollowerPosition(id1);	
+       UserAccount user=UserPositionUpdate.getFollowerPosition(id1);	
        if(user==null)
 		{
 			return "error";
