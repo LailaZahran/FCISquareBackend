@@ -10,6 +10,7 @@ import com.mysql.jdbc.Statement;
 public class EnterLocation implements ICheckIn {
 	
 	String placeName;
+	int userId;
 
 	@Override
 	public CheckIn checkin(String placeName , int UserId) {
@@ -20,27 +21,43 @@ try {
 			Connection conn = DBConnection.getActiveConnection();
 			String sql1 = "Select * from places where `name` = ?";
 			PreparedStatement stmt1;
-			stmt1 = conn.prepareStatement(sql1, Statement.RETURN_GENERATED_KEYS);
+			stmt1 = conn.prepareStatement(sql1);
 			stmt1.setString(1, placeName);
+
+			ResultSet rs1 = stmt1.executeQuery();
+			EnterLocation check=new EnterLocation();
 			
-			stmt1.executeUpdate();
-			ResultSet rs1 = stmt1.getGeneratedKeys();
 			if (rs1.next()) {
-				EnterLocation check=new EnterLocation();
+				
 				check.placeName=placeName;
-			
+				System.out.println(placeName);
 			}
 			else {
 				//Call function save new place
-				String sql = "Insert into places (`name`) VALUES  (?)";
+				String sql2 = "INSERT INTO `places` (`name`, `description`, `lat`, `long`) VALUES  (?,?,?,?)";
+
+				PreparedStatement stmt2;
+				stmt2 = conn.prepareStatement(sql2, Statement.RETURN_GENERATED_KEYS);
+				stmt2.setString(1, placeName);
+				stmt2.setString(2, "NewPlace");
+				stmt2.setDouble(3, 1202);
+				stmt2.setDouble(4, 23);
+	            System.out.println("Enty hna?");			
+				stmt2.executeUpdate();
+				ResultSet rs = stmt2.getGeneratedKeys();
 				
-				
+				if (rs.next()) {
+
+		            System.out.println("Enty hna kman?");	
+					Places p=new Places();
+					p.name=placeName;
+					check.placeName=placeName;
+				}
+			
 			}
 			
 			
-			String sql2 = "Insert into checkin (`userId`,`placeName`) VALUES  (?,?)";
-			// System.out.println(sql);
-
+			String sql2 = "INSERT INTO `check-in`( `userId`, `placeName`) VALUES  (?,?)";     
 			PreparedStatement stmt2;
 			stmt2 = conn.prepareStatement(sql2, Statement.RETURN_GENERATED_KEYS);
 			stmt2.setInt(1, UserId);
@@ -48,14 +65,14 @@ try {
 			
 			stmt2.executeUpdate();
 			ResultSet rs = stmt2.getGeneratedKeys();
-			
 			if (rs.next()) {
-				CheckIn check1=new CheckIn();
+				EnterLocation check1=new EnterLocation();
 				check1.placeName=placeName;
 				check1.userId=UserId;
-				return check1;
+				//return check1;
+				 System.out.println("hereee");
 			}
-			return null;
+			
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -69,6 +86,11 @@ try {
 	public String getplaceName() {
 		// TODO Auto-generated method stub
 		return placeName;
+	}
+
+	public int getuserId() {
+		// TODO Auto-generated method stub
+		return userId;
 	}
 
 }

@@ -40,7 +40,7 @@ public class CheckInServices {
 	@Path("/checkin")
 	@Produces(MediaType.TEXT_PLAIN)
 	public String checkin(@FormParam("placeName") String placeName, @FormParam("UserId") int UserId) {
-		CheckIn loc = new CheckIn();
+		EnterLocation loc = new EnterLocation();
 		loc.checkin(placeName, UserId);
 		JSONObject json = new JSONObject();
 		json.put("placeName", loc.getplaceName());

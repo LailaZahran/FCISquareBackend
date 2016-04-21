@@ -47,7 +47,6 @@ public class UserAccount implements IUserAccount {
 				user.lon = 0.0;
 				return user;
 			}
-			return null;
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -75,19 +74,23 @@ public class UserAccount implements IUserAccount {
 			stmt.setString(1, email);
 			stmt.setString(2, pass);
 			
-			
+			UserAccount user = new UserAccount();
+
 			ResultSet rs = stmt.executeQuery();
 			if (rs.next()) {
-				UserAccount user = new UserAccount();
+				
+				System.out.println(rs.getString("email")+"iii");
+				//UserAccount user = new UserAccount();
 				user.id = rs.getInt(1);
 				user.email = rs.getString("email");
 				user.pass = rs.getString("password");
+				
 				user.name = rs.getString("name");
 				user.lat = rs.getDouble("lat");
 				user.lon = rs.getDouble("long");
-				return user;
+				
 			}
-			return null;
+			return user;
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
