@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 import javax.ws.rs.FormParam;
 import javax.ws.rs.GET;
@@ -15,11 +16,14 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 import org.glassfish.jersey.server.mvc.Viewable;
+import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
 import com.models.DBConnection;
 import com.models.FollowActivities;
+import com.models.UserActiviy;
 import com.models.UserPositionUpdate;
+import com.models.homePages;
 import com.controller.UserAccount;
 
 @Path("/")
@@ -190,5 +194,33 @@ public class Services {
 		return "Hello after editing";
 		// Connection URL:
 		// mysql://$OPENSHIFT_MYSQL_DB_HOST:$OPENSHIFT_MYSQL_DB_PORT/
+	}
+	
+	@POST
+	@Path("/historyOfAction")
+	@Produces(MediaType.TEXT_PLAIN)
+	public String historyOfAction() {
+		JSONArray actions=new JSONArray();
+		UserActiviy U=new UserActiviy ();
+		ArrayList<UserActiviy> L = new ArrayList<UserActiviy>();
+		L=U.historyOfAction();
+		for (int i=0;i<L.size();i++){
+			JSONObject json = new JSONObject();
+			json.put("type", L.get(i).type);
+			if ( L.get(i).type==0){
+				json.put("CommentId", L.get(i).typeId);
+			}
+			else if ( L.get(i).type==1){
+				json.put("LikeId", L.get(i).typeId);
+			}
+			else
+			{
+				json.put("Check-inId", L.get(i).typeId);	
+			}
+			
+			actions.add(json);
+		}
+			
+		return actions.toString();
 	}
 }

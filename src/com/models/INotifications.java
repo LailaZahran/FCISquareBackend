@@ -3,7 +3,7 @@ package com.models;
 public interface INotifications {
 	
 	
-	public void respond();
+	public CheckIn respond(int notificationId,int type );
 	
 
 }

@@ -100,6 +100,16 @@ CREATE TABLE IF NOT EXISTS `comment` (
 			    
 			//	return c;
 			}
+            String sql4 = "INSERT INTO `historyofactions`( `type`, `typeId`) VALUES  (?,?)";
+			
+			
+			PreparedStatement stmt4;
+			stmt4 = conn.prepareStatement(sql3, Statement.RETURN_GENERATED_KEYS);
+			stmt4.setInt(1, 0);
+			stmt4.setInt(2, commentId);
+			
+			stmt4.executeUpdate();
+			ResultSet rs4 = stmt4.getGeneratedKeys();
 			
 			return null;
 		} catch (SQLException e) {

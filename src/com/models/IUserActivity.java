@@ -1,7 +1,9 @@
 package com.models;
 
+import java.util.ArrayList;
+
 public interface IUserActivity {
 	
-	public abstract void historyOfAction();
+	public abstract ArrayList<UserActiviy> historyOfAction();
 
 }

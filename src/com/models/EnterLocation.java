@@ -11,6 +11,7 @@ public class EnterLocation implements ICheckIn {
 	
 	String placeName;
 	int userId;
+	int chekinId;
 
 	@Override
 	public CheckIn checkin(String placeName , int UserId) {
@@ -65,13 +66,25 @@ try {
 			
 			stmt2.executeUpdate();
 			ResultSet rs = stmt2.getGeneratedKeys();
+			EnterLocation check1=new EnterLocation();
 			if (rs.next()) {
-				EnterLocation check1=new EnterLocation();
+				//EnterLocation check1=new EnterLocation();
+				check1.chekinId=rs.getInt(1);
 				check1.placeName=placeName;
 				check1.userId=UserId;
 				//return check1;
 				 System.out.println("hereee");
 			}
+			String sql4 = "INSERT INTO `historyofactions`( `type`, `typeId`) VALUES  (?,?)";
+
+
+			PreparedStatement stmt4;
+			stmt4 = conn.prepareStatement(sql4, Statement.RETURN_GENERATED_KEYS);
+			stmt4.setInt(1, 2);
+			stmt4.setInt(2, check1.chekinId);
+
+			stmt4.executeUpdate();
+			ResultSet rs4 = stmt4.getGeneratedKeys();
 			
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block

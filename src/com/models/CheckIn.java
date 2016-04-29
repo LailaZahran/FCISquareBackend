@@ -11,7 +11,7 @@ import com.mysql.jdbc.Statement;
 
 public class CheckIn implements ICheckIn {
 	
-    String placeName;
+    public String placeName;
    // UserAccount user=new UserAccount();
    int userId;
 //   UserAccount user =new UserAccount();

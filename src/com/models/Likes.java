@@ -71,9 +71,9 @@ stmt3.setInt(4, likeId);
 
 stmt3.executeUpdate();
 ResultSet rs3 = stmt3.getGeneratedKeys();
-
-if (rs3.next()) {
 Notifications c=new Notifications();
+if (rs3.next()) {
+
 c.likeId=rs3.getInt(1);
 c.checkinId=checkinId;
 c.user1Id=userId;
@@ -81,6 +81,16 @@ c.user1Id=userId;
 //	return c;
 }
 			////////////////////
+String sql4 = "INSERT INTO `historyofactions`( `type`, `typeId`) VALUES  (?,?)";
+
+
+PreparedStatement stmt4;
+stmt4 = conn.prepareStatement(sql4, Statement.RETURN_GENERATED_KEYS);
+stmt4.setInt(1, 1);
+stmt4.setInt(2, c.likeId);
+
+stmt4.executeUpdate();
+ResultSet rs4 = stmt4.getGeneratedKeys();
 			return null;
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block

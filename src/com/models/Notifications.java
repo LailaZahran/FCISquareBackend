@@ -27,10 +27,10 @@ public class Notifications implements INotifications {
 	int likeId;
 	int checkinId;
 	int user1Id;
-	int user2Id;
-	int type;
+	public int user2Id;
+	public int type;
 	
-	public static ArrayList<Integer> GetNotifications(int UserID) {
+	public ArrayList<Notifications> GetNotifications(int UserID) {
 		try {
 		Connection conn = DBConnection.getActiveConnection();
 		String sql = "Select `user2Id`, `type`, `typeId` from `notificationlist` WHERE `user1Id` = ?";  //checkIn is a table 
@@ -40,14 +40,16 @@ public class Notifications implements INotifications {
 		
 		ResultSet rs1 = stmt.executeQuery();
 		EnterLocation check=new EnterLocation();
-		
-		if (rs1.next()) {
+		ArrayList<Notifications> N =new ArrayList<Notifications>();
+		while (rs1.next()) {
 			
 		Notifications I= new Notifications();
 		I.user2Id=rs1.getInt("user2Id");
 		I.type=rs1.getInt("type");
+		N.add(I);
 		
 		}
+		return N;
 		//	ArrayList<Integer> Notify = new ArrayList<>();
 			
 			  
@@ -60,9 +62,9 @@ public class Notifications implements INotifications {
 	}
 
 	@Override
-	public void respond() {
+	public CheckIn respond(int notificationId,int type ) {
 		// TODO Auto-generated method stub
-		
+		return null;
 	}
 }
  

@@ -1,7 +1,9 @@
 package com.models;
 
+import java.util.ArrayList;
+
 public interface IHomePages {
 	
-	public abstract void sort();
+	public abstract ArrayList<Integer> sort();
 
 }
