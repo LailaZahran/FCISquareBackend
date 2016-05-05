@@ -41,10 +41,12 @@ public class CheckInServices {
 	@Produces(MediaType.TEXT_PLAIN)
 	public String checkin(@FormParam("placeName") String placeName, @FormParam("UserId") int UserId) {
 		EnterLocation loc = new EnterLocation();
-		loc.checkin(placeName, UserId);
+		String check=loc.checkin(placeName, UserId);
 		JSONObject json = new JSONObject();
-		json.put("placeName", loc.getplaceName());
-		json.put("userId", loc.getuserId());
+		
+		
+		json.put("your checkIn", check);
+		//json.put("userId", loc.getuserId());
 		return json.toJSONString();
 	}
 	

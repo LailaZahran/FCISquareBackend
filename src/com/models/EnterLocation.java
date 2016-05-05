@@ -14,7 +14,7 @@ public class EnterLocation implements ICheckIn {
 	int chekinId;
 
 	@Override
-	public CheckIn checkin(String placeName , int UserId) {
+	public String checkin(String placeName , int UserId) {
 		
 try {
 			
@@ -85,6 +85,7 @@ try {
 
 			stmt4.executeUpdate();
 			ResultSet rs4 = stmt4.getGeneratedKeys();
+			return  "Done" ;
 			
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block

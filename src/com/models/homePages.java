@@ -111,11 +111,13 @@ try {
 	{
 		try {	
 		Connection conn = DBConnection.getActiveConnection();
-		String str="SELECT `id` FROM `places` ORDER BY `numOfReq` ASC";
-		String sql1 ="SELECT `typeId` FROM `homepage` WHERE `type`=1 AND `typeId`=" + str  ;
+		//String str="SELECT `id` FROM `places` ORDER BY `numOfReq` ASC";
+		String sql1 ="SELECT `typeId` FROM `homepage` WHERE `type`=1 AND `typeId`=  \"   SELECT `id` FROM `places` ORDER BY `numOfReq` ASC  \"     " ;
 				//"SELECT `typeId` FROM `homepage` WHERE `type`=1 AND `typeId`="+"SELECT `id` FROM `places` ORDER BY `numOfReq` ASC" ;
 	
 		//
+			
+	//	\"ROM\" 
 				
 		PreparedStatement stmt1;
 		stmt1 = conn.prepareStatement(sql1);

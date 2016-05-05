@@ -33,7 +33,7 @@ public class Likes {
 				c.userId=userId;
 				c.likeId=rs.getInt(1);
 				likeId=c.likeId;
-				//return c;
+				return c;
 			}
 
 		///////////////////

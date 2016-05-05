@@ -56,11 +56,11 @@ public class Places {
             System.out.println("Enty hna?");			
             stmt2.executeUpdate();
 			ResultSet rs = stmt2.getGeneratedKeys();
-			
+			Places p=new Places();
 			if (rs.next()) {
 
 	            System.out.println("Enty hna kman?");	
-				Places p=new Places();
+				
 				p.name=name;
 				p.desc=desc;
 				p.lon=lon;
@@ -68,7 +68,7 @@ public class Places {
 				return p;
 			}
 			
-			return null;
+			return p;
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -88,6 +88,7 @@ public class Places {
 				stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
 				stmt.setString(1, name);
 				ResultSet rs = stmt.executeQuery();
+				Places p=new Places();
 				if (rs.next()) {
 					int placeId=rs.getInt(1);
 					String sql2 = "Insert into `savedplaces`(`userId`, `placeId`) VALUES  (?,?)"; //"userPlaces table"  save new place
@@ -96,7 +97,7 @@ public class Places {
 					stmt1.setInt(1,  UserID);
 					stmt1.setInt(2, placeId);
 					stmt1.executeUpdate();
-					Places p=new Places();
+					
 					if (rs.next()) {
 
 			            System.out.println("Enty hna kman?");	
@@ -107,7 +108,7 @@ public class Places {
 					}return p;
 					//return true;
 				}
-				return null;
+				return p;
 			} catch (SQLException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();

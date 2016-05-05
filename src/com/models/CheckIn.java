@@ -17,10 +17,9 @@ public class CheckIn implements ICheckIn {
 //   UserAccount user =new UserAccount();
    
 	
-	public CheckIn checkin( String placeName , int UserId){
-		CheckIn check=new CheckIn();
-		return check;
-		
+	public String checkin( String placeName , int UserId){
+		//CheckIn check=new CheckIn();
+	   return null;
 	}
 
 

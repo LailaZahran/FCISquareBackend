@@ -39,9 +39,9 @@ CREATE TABLE IF NOT EXISTS `comment` (
 			
 			stmt2.executeUpdate();
 			ResultSet rs = stmt2.getGeneratedKeys();
-			
+			Comments c=new Comments();
 			if (rs.next()) {
-				Comments c=new Comments();
+				
 				c.commentId=rs.getInt(1);
 				c.checkinId=checkinId;
 				c.comment=comment;
@@ -93,12 +93,12 @@ CREATE TABLE IF NOT EXISTS `comment` (
 			ResultSet rs3 = stmt3.getGeneratedKeys();
 			
 			if (rs3.next()) {
-				Notifications c=new Notifications();
-				c.commentId=rs3.getInt(1);
-				c.checkinId=checkinId;
-				c.user1Id=userId;
+				Notifications n=new Notifications();
+				n.commentId=rs3.getInt(1);
+				n.checkinId=checkinId;
+				n.user1Id=userId;
 			    
-			//	return c;
+				return c;
 			}
             String sql4 = "INSERT INTO `historyofactions`( `type`, `typeId`) VALUES  (?,?)";
 			
