@@ -35,16 +35,7 @@ try {
 			ResultSet rs2 = stmt2.executeQuery();
 			
 			
-			if (rs2.next()) {
-			n.checkinId=rs2.getInt("checkinId");
-			}
-			
-			String sql3 = "SELECT * FROM `check-in` WHERE `id`=?";
-			PreparedStatement stmt3;
-			stmt3 = conn.prepareStatement(sql3);
-			stmt3.setInt(1,n.checkinId);
-			
-			ResultSet rs3 = stmt3.executeQuery();
+			ResultSet rs3 = getCheckin(conn, n, rs2);
 			CheckIn c = new CheckIn();
 			
 			if (rs3.next()) {
@@ -60,6 +51,21 @@ try {
 
 		
 		return null;
+	}
+
+	private ResultSet getCheckin(Connection conn, Notifications n, ResultSet rs2)
+			throws SQLException {
+		if (rs2.next()) {
+		n.checkinId=rs2.getInt("checkinId");
+		}
+		
+		String sql3 = "SELECT * FROM `check-in` WHERE `id`=?";
+		PreparedStatement stmt3;
+		stmt3 = conn.prepareStatement(sql3);
+		stmt3.setInt(1,n.checkinId);
+		
+		ResultSet rs3 = stmt3.executeQuery();
+		return rs3;
 	}
 	
 

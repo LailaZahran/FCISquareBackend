@@ -9,7 +9,10 @@ import java.util.ArrayList;
 import com.mysql.jdbc.Statement;
 
 public class UserActiviy implements IUserActivity {
- 
+ /*
+  * This class is responsible for functions like
+  * history of actions for users actions
+  */
 	public int type;
 	public int typeId;
 

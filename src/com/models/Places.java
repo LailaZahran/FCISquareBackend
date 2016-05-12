@@ -9,6 +9,10 @@ import com.controller.UserAccount;
 import com.mysql.jdbc.Statement;
 
 public class Places {
+	/*
+	 * This class is responsible for functions that are related to
+	 * places like add new place /save place
+	 */
 	
 	String name;
 	String desc;

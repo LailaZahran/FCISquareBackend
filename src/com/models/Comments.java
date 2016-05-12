@@ -13,17 +13,10 @@ public class Comments {
 	int userId;
 	int commentId;
 	String comment;
+    
 	/*
-	 * 
-CREATE TABLE IF NOT EXISTS `comment` (
-  
-  `checkinId` int(11) NOT NULL,
-  `userId` int(11) NOT NULL,
-  `comment` varchar(22) NOT NULL,
-  
- 
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
-
+	 * Function comment responsible of adding a comment to 
+	 * a certain check-in from a given id
 	 */
 	public Comments comment(int checkinId, String comment, int userId){
 		
@@ -52,28 +45,7 @@ CREATE TABLE IF NOT EXISTS `comment` (
 			System.out.println("Comment Id: " + commentId);
 
 		
-			// *  `user1Id` int(11) NOT NULL,
-			// *  `user2Id` int(11) NOT NULL,
-			 //*  `type` int(11) NOT NULL,
-			 //*  `typeId` int(11) NOT NULL,
-			
-				
-			//////////////////////////////////////////////////////////
-			String sql1 = "SELECT  `userId` FROM `check-in` where `id` = ?";
-			
-			PreparedStatement stmt1;
-			stmt1 = conn.prepareStatement(sql1);
-			stmt1.setInt(1, checkinId);
-
-			ResultSet rs1 = stmt1.executeQuery();
-			UserAccount u=new UserAccount();
-			
-			if (rs1.next()) {
-				
-				u.id=rs1.getInt(1);
-				
-			}
-			System.out.println("User2 Id: " + u.id);
+			UserAccount u = getCheckinComment(checkinId, conn);
 			
 			//////////////////////////////////
 			//ageb mn el checkin table, esm el user ely 3ml checkin, using checkin id..
@@ -82,15 +54,7 @@ CREATE TABLE IF NOT EXISTS `comment` (
 			String sql3 = "Insert into `notificationlist` (`user1Id`,`user2Id`,`type`,`typeId` ) VALUES  (?,?,?,?)";
 			
 			
-			PreparedStatement stmt3;
-			stmt3 = conn.prepareStatement(sql3, Statement.RETURN_GENERATED_KEYS);
-			stmt3.setInt(1, userId);
-			stmt3.setInt(2, u.id);
-			stmt3.setInt(3,0);
-			stmt3.setInt(4, commentId);
-			
-			stmt3.executeUpdate();
-			ResultSet rs3 = stmt3.getGeneratedKeys();
+			ResultSet rs3 = getNotification(userId, conn, u, sql3);
 			
 			if (rs3.next()) {
 				Notifications n=new Notifications();
@@ -120,6 +84,38 @@ CREATE TABLE IF NOT EXISTS `comment` (
 		
 		// TODO Auto-generated method stub
 		
+	}
+	private ResultSet getNotification(int userId, Connection conn,
+			UserAccount u, String sql3) throws SQLException {
+		PreparedStatement stmt3;
+		stmt3 = conn.prepareStatement(sql3, Statement.RETURN_GENERATED_KEYS);
+		stmt3.setInt(1, userId);
+		stmt3.setInt(2, u.id);
+		stmt3.setInt(3,0);
+		stmt3.setInt(4, commentId);
+		
+		stmt3.executeUpdate();
+		ResultSet rs3 = stmt3.getGeneratedKeys();
+		return rs3;
+	}
+	private UserAccount getCheckinComment(int checkinId, Connection conn)
+			throws SQLException {
+		String sql1 = "SELECT  `userId` FROM `check-in` where `id` = ?";
+		
+		PreparedStatement stmt1;
+		stmt1 = conn.prepareStatement(sql1);
+		stmt1.setInt(1, checkinId);
+
+		ResultSet rs1 = stmt1.executeQuery();
+		UserAccount u=new UserAccount();
+		
+		if (rs1.next()) {
+			
+			u.id=rs1.getInt(1);
+			
+		}
+		System.out.println("User2 Id: " + u.id);
+		return u;
 	}
 	public int getcheckinId() {
 		// TODO Auto-generated method stub

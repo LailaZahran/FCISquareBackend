@@ -14,8 +14,11 @@ public class FollowActivities {
 	private Integer id;
 	private Double lat;
 	private Double lon;
-	
-	//////////// Follow User/////////////////////////
+	/*
+	 * This class is responsible for follow activities that 
+	 * include follow/unfollow / getfollowers
+	 * 
+	 */
 	/**
 	 * 
 	 * @param id1
@@ -38,10 +41,7 @@ public class FollowActivities {
 			//////////////////////////////////////////////////
 			ResultSet rs = stmt.getGeneratedKeys();
 			if (rs.next()) {
-				UserAccount user = new UserAccount();
-				UserAccount user2 = new UserAccount();
-				user.id = rs.getInt(1);
-	            user2.id=rs.getInt(2);
+				userInstance(rs);
 			}
 			System.out.println(id1);
 			System.out.println(id2);
@@ -75,10 +75,7 @@ public class FollowActivities {
 			
 			ResultSet rs = stmt.getGeneratedKeys();
 			if (rs.next()) {
-				UserAccount user = new UserAccount();
-				UserAccount user2 = new UserAccount();
-				user.id = rs.getInt(1);
-	            user2.id=rs.getInt(2);
+				userInstance(rs);
 			}
 			System.out.println(id1);
 			System.out.println(id2);
@@ -91,6 +88,12 @@ public class FollowActivities {
 			}
 		return false;
 		}
+	private static void userInstance(ResultSet rs) throws SQLException {
+		UserAccount user = new UserAccount();
+		UserAccount user2 = new UserAccount();
+		user.id = rs.getInt(1);
+		user2.id=rs.getInt(2);
+	}
 	
 ////////////get Followers/////////////////////////
 /**

@@ -10,7 +10,12 @@ import com.mysql.jdbc.Statement;
 
 
 public class CheckIn implements ICheckIn {
-	
+	/*
+	 * This class is responsible for check-in function
+	 * and this function is implemented with two strategies
+	 * one is by entering the user's location and the other is by entering
+	 * current location
+	 */
     public String placeName;
    // UserAccount user=new UserAccount();
    int userId;

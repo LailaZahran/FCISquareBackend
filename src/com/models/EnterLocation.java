@@ -17,8 +17,6 @@ public class EnterLocation implements ICheckIn {
 	public String checkin(String placeName , int UserId) {
 		
 try {
-			
-			
 			Connection conn = DBConnection.getActiveConnection();
 			String sql1 = "Select * from places where `name` = ?";
 			PreparedStatement stmt1;
@@ -42,8 +40,7 @@ try {
 				stmt2.setString(1, placeName);
 				stmt2.setString(2, "NewPlace");
 				stmt2.setDouble(3, 1202);
-				stmt2.setDouble(4, 23);
-	            System.out.println("Enty hna?");			
+				stmt2.setDouble(4, 23);			
 				stmt2.executeUpdate();
 				ResultSet rs = stmt2.getGeneratedKeys();
 				
@@ -73,7 +70,6 @@ try {
 				check1.placeName=placeName;
 				check1.userId=UserId;
 				//return check1;
-				 System.out.println("hereee");
 			}
 			String sql4 = "INSERT INTO `historyofactions`( `type`, `typeId`) VALUES  (?,?)";
 
